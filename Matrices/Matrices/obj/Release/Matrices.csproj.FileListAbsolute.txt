@@ -1,9 +1,10 @@
-C:\Users\x\Desktop\Individual Project\Matrices\Matrices\bin\Release\Matrices.exe.config
-C:\Users\x\Desktop\Individual Project\Matrices\Matrices\bin\Release\Matrices.exe
-C:\Users\x\Desktop\Individual Project\Matrices\Matrices\bin\Release\Matrices.pdb
 C:\Users\x\Desktop\Individual Project\Matrices\Matrices\obj\Release\Matrices.Form1.resources
 C:\Users\x\Desktop\Individual Project\Matrices\Matrices\obj\Release\Matrices.Properties.Resources.resources
 C:\Users\x\Desktop\Individual Project\Matrices\Matrices\obj\Release\Matrices.csproj.GenerateResource.cache
 C:\Users\x\Desktop\Individual Project\Matrices\Matrices\obj\Release\Matrices.csproj.CoreCompileInputs.cache
-C:\Users\x\Desktop\Individual Project\Matrices\Matrices\obj\Release\Matrices.exe
-C:\Users\x\Desktop\Individual Project\Matrices\Matrices\obj\Release\Matrices.pdb
+C:\Users\x\Desktop\Individual Project\Matrices\Matrices\bin\Release\SoLE_Solver.exe.config
+C:\Users\x\Desktop\Individual Project\Matrices\Matrices\bin\Release\SoLE_Solver.exe
+C:\Users\x\Desktop\Individual Project\Matrices\Matrices\bin\Release\SoLE_Solver.pdb
+C:\Users\x\Desktop\Individual Project\Matrices\Matrices\obj\Release\Matrices.AboutBox1.resources
+C:\Users\x\Desktop\Individual Project\Matrices\Matrices\obj\Release\SoLE_Solver.exe
+C:\Users\x\Desktop\Individual Project\Matrices\Matrices\obj\Release\SoLE_Solver.pdb

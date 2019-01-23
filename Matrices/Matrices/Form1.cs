@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace Matrices
@@ -8,89 +9,148 @@ namespace Matrices
         static int n, i, j, r1, r2;
         static double[,] m1, m2, ta;
         static double[] x, b, det, xc;
+        static Boolean ifSLAEhomogenous, mComplete = false, mFormed = false;
+        static double mainDet;
+        AboutBox1 a;
 
         public Form1()
         {
             InitializeComponent();
-            
+            List<string> methods = new List<string> {
+                "Метод Крамера", "Метод Гаусса", "Матричный метод"
+            };
+            domainUpDown1.Items.AddRange(methods);
+            domainUpDown1.SelectedIndex = 0;
+            label11.Text = "Статус: введите размер матрицы";
         }
 
         private void setBtn_Click(object sender, System.EventArgs e)
         {
-            if (int.TryParse(textBox1.Text, out n))
+            if (int.TryParse(textBox1.Text, out n) && n > 0)
             {
                 n = Convert.ToInt32(textBox1.Text);
                 m1 = new double[n, n];
                 b = new double[n];
                 x = new double[n];
-                m2 = new double[n, n+1];
+                m2 = new double[n, n + 1];
+
                 dataGridView1.RowCount = n;
                 dataGridView1.ColumnCount = n;
+                for (i = 0; i < n; i++)
+                {
+                    if (n <= 6) dataGridView1.Columns[i].Width = 360 / n;
+                    else dataGridView1.Columns[i].Width = 60;
+                    dataGridView1.Columns[i].HeaderText = "a" + (i + 1);
+                }
+
                 dataGridView2.RowCount = n;
                 dataGridView2.ColumnCount = 1;
+                dataGridView2.Columns[0].Width = 90;
+
                 dataGridView3.RowCount = n;
                 dataGridView3.ColumnCount = 1;
+                dataGridView3.Columns[0].Width = 90;
+                label11.Text = "Статус: заполните A и B";
+                mFormed = true;
+            }
+            else
+            {
+                mFormed = false; mComplete = false;
+                label11.Text = "Статус: размер матрицы - целое положительное число";
             }
         }
 
         private void solveBtn_Click(object sender, System.EventArgs e)
         {
-            for (i = 0; i < n; i++)
+            if (mFormed)
             {
-                b[i]= Convert.ToDouble(dataGridView3.Rows[i].Cells[0].Value);
-                m2[i, n] = b[i];
-                for (j = 0; j < n; j++)
+                mComplete = true;
+                for (i = 0; i < n; i++)
                 {
-                    m1[i, j] = Convert.ToDouble(dataGridView1.Rows[i].Cells[j].Value);
-                    m2[i, j] = m1[i, j];
+                    for (j = 0; j < n; j++) if (dataGridView1.Rows[i].Cells[j].Value == null) mComplete = false;
+                    if (dataGridView3.Rows[i].Cells[0].Value == null) mComplete = false;
                 }
-            }
-            label2.Text= "Определитель: " + Det(m1);
-            r1 = Rank(n, n, m1); r2 = Rank(n, n+1, m2);
-            label5.Text = "Ранг матрицы: " + r1 + "(" + r2 + ")";
-            if (r1 == r2)
-            {
-                if (r1 == n)
+                if (mComplete)
                 {
-                    label6.Text = "Решений: одно";
-                    if (checkBox1.Checked)
+                    ifSLAEhomogenous = true;
+                    for (i = 0; i < n; i++)
                     {
-                        FormatSystem(n, n+1, m2);
-                        x= GaussMethod(m2);
-                        for (i = 0; i < n; ++i) dataGridView2.Rows[i].Cells[0].Value = x[i];
+                        b[i] = Convert.ToDouble(dataGridView3.Rows[i].Cells[0].Value);
+                        if (b[i] != 0) ifSLAEhomogenous = false;
+                        m2[i, n] = b[i];
+                        for (j = 0; j < n; j++)
+                        {
+                            m1[i, j] = Convert.ToDouble(dataGridView1.Rows[i].Cells[j].Value);
+                            m2[i, j] = m1[i, j];
+                        }
+                    }
+                    mainDet = Det(m1);
+                    label2.Text = "Определитель: " + mainDet;
+                    r1 = Rank(n, n, m1); r2 = Rank(n, n + 1, m2);
+                    label5.Text = "Ранг матрицы: " + r1 + "(" + r2 + ")";
+
+                    if (ifSLAEhomogenous) label10.Text = "Матрица однородна: да";
+                    else label10.Text = "Матрица однородна: нет";
+
+                    if (r1 == r2)
+                    {
+                        label9.Text = "Матрица совместна: да";
+                        if (r1 == n && mainDet != 0)
+                        {
+                            label6.Text = "Решений: одно";
+                            if (domainUpDown1.SelectedIndex == 1)
+                            {
+                                label4.Text = "Матрица, отформатированная методом Гаусса";
+                                FormatSystem(n, n + 1, m2);
+                                x = GaussMethod(m2);
+                                for (i = 0; i < n; ++i) dataGridView2.Rows[i].Cells[0].Value = x[i];
+                            }
+                            else if (domainUpDown1.SelectedIndex == 0)
+                            {
+                                label4.Text = "Опр-ли для мод. A (номер опр-ля соотв. столбцу, заменённому на B)";
+                                dataGridView4.RowCount = n;
+                                dataGridView4.ColumnCount = 2;
+                                x = Cramer(m1, n, b);
+                                for (i = 0; i < n; ++i) dataGridView2.Rows[i].Cells[0].Value = x[i];
+                            }
+                            else if (domainUpDown1.SelectedIndex == 2)
+                            {
+                                label4.Text = "Транспонированная союзная матрица";
+                                MatMet(m1, b);
+                            }
+                            label11.Text = "Статус: найдено частное решение";
+                        }
+                        if (r1 < n || mainDet == 0)
+                        {
+                            label6.Text = "Решений: ∞";
+                            FormatSystem(n, n + 1, m2);
+                            label11.Text = "Статус: найдено общее решение";
+                        }
                     }
                     else
                     {
-                        dataGridView4.RowCount = n;
-                        dataGridView4.ColumnCount = 2;
-                        x = Cramer(m1, n, b);
-                        for (i = 0; i < n; ++i) dataGridView2.Rows[i].Cells[0].Value = x[i];
+                        label4.Text = "Матрица, отформатированная методом Гаусса";
+                        label6.Text = "Решений: нет";
+                        label11.Text = "Статус: система не имеет решений";
+                        label9.Text = "Матрица совместна: нет";
                     }
                 }
-                if(r1<n) 
-                {
-                    label6.Text = "Решений: ∞";
-                    FormatSystem(n, n+1, m2);
-                }
+                else label11.Text = "Статус: обнаружены пустые поля, заполните их";
             }
-            else label6.Text = "Решений: нет";
+            else label11.Text = "Статус: сначала создайте матрицу";
+        }
+
+        private void linkLabel1_Clicked(object sender, System.EventArgs e)
+        {
+            a.ShowDialog();
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            a = new AboutBox1();
             button2.Click += new EventHandler(this.setBtn_Click);
             button1.Click += new EventHandler(this.solveBtn_Click);
-            checkBox1.Click += new EventHandler(this.ch1_Click);
-            checkBox2.Click += new EventHandler(this.ch2_Click);
-        }
-
-        public void ch1_Click(object sender, System.EventArgs e)
-        {
-            checkBox2.Checked = false;
-        }
-        public void ch2_Click(object sender, System.EventArgs e)
-        {
-            checkBox1.Checked = false;
+            linkLabel1.Click += new EventHandler(this.linkLabel1_Clicked);
         }
 
         public double[] Cramer(double[,] a, int size, double[] b) {
@@ -155,21 +215,21 @@ namespace Matrices
             return Det(tp);
         }
 
-        void FormatSystem(int nf, int mf, double[,] a)
+        void FormatSystem(int row, int col, double[,] a)
         {
             int i, j, k;
             double E, temp;
-            double[] tempm = new double[mf];
-            for (k = 0; k < nf; k++) //перебор строк
+            double[] tempm = new double[col];
+            for (k = 0; k < row; k++) //перебор строк
             {
                 if (a[k, k] != 0) //главная диагональ
                 {
-                    for (i = k + 1; i < nf; i++) //от k+1 до конца
+                    for (i = k + 1; i < row; i++) //от k+1 до конца
                     {
                         temp = a[k, k];
-                        for (j = 0; j < mf; j++) { a[k, j] /= temp; } //делит строку k на a[k][k]
+                        for (j = 0; j < col; j++) { a[k, j] /= temp; } //делит строку k на a[k][k]
                         E = -a[i, k] / a[k, k]; //делитель
-                        for (j = k; j < mf; j++)
+                        for (j = k; j < col; j++)
                         {
                             a[i, j] += E * a[k, j]; //все строки вниз умножаются на делитель
                         }
@@ -181,20 +241,22 @@ namespace Matrices
                     {
                         if (i > k && a[i, k] != 0)
                         {
-                            for (j = 0; j < mf; j++) tempm[j] = a[k, j];
-                            for (j = 0; j < mf; j++) a[k, j] = a[i, j];
-                            for (j = 0; j < mf; j++) a[i, j] = tempm[j];
+                            for (j = 0; j < col; j++) tempm[j] = a[k, j];
+                            for (j = 0; j < col; j++) a[k, j] = a[i, j];
+                            for (j = 0; j < col; j++) a[i, j] = tempm[j];
                         }
                     }
                 }
             }
 
-            dataGridView4.RowCount = nf;
-            dataGridView4.ColumnCount = mf;
-            for (k = 0; k < nf; ++k)
-                for (i = 0; i < mf; ++i) dataGridView4.Rows[k].Cells[i].Value = a[k,i];
-               
-
+            dataGridView4.RowCount = row;
+            dataGridView4.ColumnCount = col;
+            for (k = 0; k < col; ++k)
+            {
+                if (col <= 6) dataGridView4.Columns[k].Width = 360 / col;
+                else dataGridView4.Columns[k].Width = 60;
+                for (i = 0; i < row; ++i) dataGridView4.Rows[i].Cells[k].Value = a[i, k];
+            }   
         }
         public static double[] GaussMethod(double[,] a)
         {
@@ -216,25 +278,53 @@ namespace Matrices
             return x;
         }
 
-        public int Rank(int nr, int mr, double[,] a)
+        public void MatMet(double[,] a, double[] b)
+        {
+            int size = b.GetLength(0), mi, mj;
+            double tempadj, detA = Det(a);
+            double[] xa = new double[size];
+            double[,] backA = new double[size, size];
+
+            dataGridView4.RowCount = size;
+            dataGridView4.ColumnCount = size;
+
+            for (mi = 0; mi < size; mi++)
+            {
+                if (size <= 6) dataGridView4.Columns[mi].Width = 360 / size;
+                else dataGridView4.Columns[mi].Width = 60;
+                tempadj = 0;
+                for (mj = 0; mj < size; mj++)
+                {
+                    if ((mi + mj + 2) % 2 == 0) backA[mi, mj] = Pivot(a, mj, mi);
+                    else backA[mi, mj] = -Pivot(a, mj, mi);
+                    dataGridView4.Rows[mi].Cells[mj].Value = backA[mi, mj];
+                    backA[mi, mj] = backA[mi, mj] / detA;
+                    tempadj = tempadj + backA[mi, mj] * b[mj];
+                }
+                xa[mi] = tempadj;
+                dataGridView2.Rows[mi].Cells[0].Value = xa[mi];
+            }
+        }
+
+        public int Rank(int row, int col, double[,] a)
         {
             int iz, jz, kz, rank=0;
             double E, tr;
-            double[] tempm = new double[mr];
+            double[] tempm = new double[col];
             Boolean cleanLine = false;
-            double[,] ra = new double[nr, mr];
-            for (kz = 0; kz < nr; kz++)
-                for (iz = 0; iz < mr; iz++) ra[kz, iz] = a[kz, iz];
-            for (kz = 0; kz < nr; kz++) //вертикаль
+            double[,] ra = new double[row, col];
+            for (kz = 0; kz < row; kz++)
+                for (iz = 0; iz < col; iz++) ra[kz, iz] = a[kz, iz];
+            for (kz = 0; kz < row; kz++) //вертикаль
             {
                 if (ra[kz, kz] != 0) //главная диагональ
                 {
-                    for (iz = kz + 1; iz < nr; iz++) //от k+1 до конца
+                    for (iz = kz + 1; iz < row; iz++) //от k+1 до конца
                     {
                         tr = ra[kz, kz];
-                        for (jz = 0; jz < mr; jz++) ra[kz, jz] /= tr; //делит строку k на a[k][k]
+                        for (jz = 0; jz < col; jz++) ra[kz, jz] /= tr; //делит строку k на a[k][k]
                         E = -ra[iz, kz] / ra[kz, kz]; //делитель
-                        for (jz = kz; jz < mr; jz++)
+                        for (jz = kz; jz < col; jz++)
                         {
                             ra[iz, jz] += E * ra[kz, jz]; //все строки вниз умножаются на делитель
                         }
@@ -246,17 +336,17 @@ namespace Matrices
                     {
                         if (iz > kz && ra[iz, kz] != 0)
                         {
-                            for (jz = 0; jz < mr; jz++) tempm[jz] = ra[kz, jz];
-                            for (jz = 0; jz < mr; jz++) ra[kz, jz] = ra[iz, jz];
-                            for (jz = 0; jz < mr; jz++) ra[iz, jz] = tempm[jz];
+                            for (jz = 0; jz < col; jz++) tempm[jz] = ra[kz, jz];
+                            for (jz = 0; jz < col; jz++) ra[kz, jz] = ra[iz, jz];
+                            for (jz = 0; jz < col; jz++) ra[iz, jz] = tempm[jz];
                         }
                     }
                 }
             }
-            for (iz = 0; iz < nr; iz++)
+            for (iz = 0; iz < row; iz++)
             {
                 cleanLine = false;
-                for (jz = 0; jz < mr; jz++)
+                for (jz = 0; jz < col; jz++)
                 {
                     if (ra[iz, jz] != 0) cleanLine = true;
                 }
