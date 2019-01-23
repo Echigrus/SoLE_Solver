@@ -1,0 +1,9 @@
+C:\Users\x\Desktop\Individual Project\Matrices\Matrices\bin\Release\Matrices.exe.config
+C:\Users\x\Desktop\Individual Project\Matrices\Matrices\bin\Release\Matrices.exe
+C:\Users\x\Desktop\Individual Project\Matrices\Matrices\bin\Release\Matrices.pdb
+C:\Users\x\Desktop\Individual Project\Matrices\Matrices\obj\Release\Matrices.Form1.resources
+C:\Users\x\Desktop\Individual Project\Matrices\Matrices\obj\Release\Matrices.Properties.Resources.resources
+C:\Users\x\Desktop\Individual Project\Matrices\Matrices\obj\Release\Matrices.csproj.GenerateResource.cache
+C:\Users\x\Desktop\Individual Project\Matrices\Matrices\obj\Release\Matrices.csproj.CoreCompileInputs.cache
+C:\Users\x\Desktop\Individual Project\Matrices\Matrices\obj\Release\Matrices.exe
+C:\Users\x\Desktop\Individual Project\Matrices\Matrices\obj\Release\Matrices.pdb
