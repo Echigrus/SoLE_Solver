@@ -220,18 +220,18 @@ namespace Matrices
             int i, j, k;
             double E, temp;
             double[] tempm = new double[col];
-            for (k = 0; k < row; k++) //перебор строк
+            for (k = 0; k < row; k++) 
             {
-                if (a[k, k] != 0) //главная диагональ
+                if (a[k, k] != 0) 
                 {
-                    for (i = k + 1; i < row; i++) //от k+1 до конца
+                    for (i = k + 1; i < row; i++) 
                     {
                         temp = a[k, k];
-                        for (j = 0; j < col; j++) { a[k, j] /= temp; } //делит строку k на a[k][k]
-                        E = -a[i, k] / a[k, k]; //делитель
+                        for (j = 0; j < col; j++) { a[k, j] /= temp; } 
+                        E = -a[i, k] / a[k, k]; 
                         for (j = k; j < col; j++)
                         {
-                            a[i, j] += E * a[k, j]; //все строки вниз умножаются на делитель
+                            a[i, j] += E * a[k, j]; 
                         }
                     }
                 }
@@ -315,18 +315,16 @@ namespace Matrices
             double[,] ra = new double[row, col];
             for (kz = 0; kz < row; kz++)
                 for (iz = 0; iz < col; iz++) ra[kz, iz] = a[kz, iz];
-            for (kz = 0; kz < row; kz++) //вертикаль
-            {
-                if (ra[kz, kz] != 0) //главная диагональ
-                {
-                    for (iz = kz + 1; iz < row; iz++) //от k+1 до конца
+            for (kz = 0; kz < row; kz++){
+                if (ra[kz, kz] != 0){
+                    for (iz = kz + 1; iz < row; iz++)
                     {
                         tr = ra[kz, kz];
-                        for (jz = 0; jz < col; jz++) ra[kz, jz] /= tr; //делит строку k на a[k][k]
-                        E = -ra[iz, kz] / ra[kz, kz]; //делитель
+                        for (jz = 0; jz < col; jz++) ra[kz, jz] /= tr;
+                        E = -ra[iz, kz] / ra[kz, kz];
                         for (jz = kz; jz < col; jz++)
                         {
-                            ra[iz, jz] += E * ra[kz, jz]; //все строки вниз умножаются на делитель
+                            ra[iz, jz] += E * ra[kz, jz];
                         }
                     }
                 }
