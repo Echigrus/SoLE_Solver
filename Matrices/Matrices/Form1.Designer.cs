@@ -48,6 +48,7 @@
             this.label10 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
+            this.button3 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView3)).BeginInit();
@@ -72,7 +73,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(513, 10);
+            this.button1.Location = new System.Drawing.Point(594, 10);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(55, 23);
             this.button1.TabIndex = 2;
@@ -93,6 +94,7 @@
             this.dataGridView1.AllowUserToAddRows = false;
             this.dataGridView1.AllowUserToDeleteRows = false;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.ColumnHeadersVisible = false;
             this.dataGridView1.Location = new System.Drawing.Point(12, 57);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowHeadersVisible = false;
@@ -214,7 +216,7 @@
             // 
             // domainUpDown1
             // 
-            this.domainUpDown1.Location = new System.Drawing.Point(376, 12);
+            this.domainUpDown1.Location = new System.Drawing.Point(457, 12);
             this.domainUpDown1.Name = "domainUpDown1";
             this.domainUpDown1.ReadOnly = true;
             this.domainUpDown1.Size = new System.Drawing.Size(131, 20);
@@ -261,11 +263,21 @@
             this.linkLabel1.Text = "О программе";
             this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_Clicked);
             // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(376, 10);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(75, 23);
+            this.button3.TabIndex = 12;
+            this.button3.Text = "Очистить";
+            this.button3.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1123, 421);
+            this.Controls.Add(this.button3);
             this.Controls.Add(this.linkLabel1);
             this.Controls.Add(this.label11);
             this.Controls.Add(this.label10);
@@ -323,6 +335,7 @@
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.LinkLabel linkLabel1;
+        private System.Windows.Forms.Button button3;
     }
 }
 
